@@ -1,6 +1,6 @@
 ---
-title: "Spring Boot, Microservicios y Patrones"
-subtitle: "Preguntas de entrevista con respuestas explicadas, de básico a experto"
+title: "Entrevista Técnica Java: Spring Boot y Microservicios"
+subtitle: "158 preguntas con respuestas explicadas, de junior a senior"
 lang: es-ES
 toc: true
 toc-depth: 2
