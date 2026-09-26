@@ -202,13 +202,14 @@ $endif$
   let a = title.match(regex("^Apéndice ([A-Z]) · (.*)$$"))
   if q != none {
     context {
-      let topics = query(selector(<question-topic>).before(here()))
-      let topic = if topics.len() > 0 { topics.last().value } else { "" }
-      badged-heading(q.captures.at(0), topic, q.captures.at(1), accent.get())
+      let found = query(selector(<question-topic>).before(here()))
+      let meta = if found.len() > 0 { found.last().value } else { (topic: "", first: false) }
+      // Cada pregunta en página nueva, salvo la primera del capítulo (va tras el bloque de color)
+      if not meta.first { pagebreak(weak: true) }
+      badged-heading(q.captures.at(0), meta.topic, q.captures.at(1), accent.get())
     }
   } else if a != none {
     accent.update(appendix-color)
-    pagebreak(weak: true)
     badged-heading(a.captures.at(0), "Apéndice", a.captures.at(1), appendix-color)
   } else {
     block(sticky: true, above: 18pt, below: 9pt, text(size: 13pt, weight: "bold", it.body))
