@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Genera las ediciones para Kindle Direct Publishing a partir de es.md:
 #   build/es.epub        ebook (requiere pandoc)
-#   build/es-print.pdf   tapa blanda 6x9 in (requiere pandoc y typst)
+#   build/es-print.pdf   tapa blanda A4 a color con sangrado (requiere pandoc y typst)
 set -euo pipefail
 cd "$(dirname "$0")"
 mkdir -p build
@@ -17,6 +17,7 @@ pandoc es.md -o build/es.epub \
 pandoc es.md -o build/es-print.typ \
   --from "$FROM" \
   --template print.typ \
-  --syntax-highlighting=idiomatic \
+  --lua-filter print.lua \
+  --syntax-highlighting=none \
   --columns=1000
 typst compile build/es-print.typ build/es-print.pdf
