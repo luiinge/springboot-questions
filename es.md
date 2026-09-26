@@ -177,7 +177,7 @@ No desde Spring 4.3 si la clase tiene un único constructor. Si tiene varios, ha
 
 **¿Cómo inyectarías una dependencia opcional?**
 
-Con ObjectProvider<T> (getIfAvailable), con Optional<T> como parámetro del constructor o con @Autowired(required = false) en un setter. ObjectProvider es la opción más flexible porque además permite resolución perezosa.
+Con `ObjectProvider<T>` (`getIfAvailable`), con `Optional<T>` como parámetro del constructor o con @Autowired(required = false) en un setter. ObjectProvider es la opción más flexible porque además permite resolución perezosa.
 
 ## P004 · ¿Qué hace la anotación @SpringBootApplication?
 
@@ -399,7 +399,7 @@ Para evitar «strings mágicos», se pueden crear anotaciones cualificadoras pro
 
 ### Repreguntas frecuentes
 
-**¿En qué orden se inyectan los beans en una List<Interfaz>?**
+**¿En qué orden se inyectan los beans en una `List<Interfaz>`?**
 
 Según @Order o la interfaz Ordered si están presentes; en otro caso, en el orden de registro, que no conviene dar por garantizado. Si el orden importa (una cadena de validadores, por ejemplo), hay que declararlo explícitamente.
 
