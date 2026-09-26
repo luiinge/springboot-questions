@@ -46,7 +46,7 @@ function Pandoc(doc)
       local nxt = blocks[i + 1]
       if is_para(nxt) then
         local s = pandoc.utils.stringify(nxt)
-        local t = s:match('^Tema: (.-) · Nivel') or s:match('^Tema: (.-) · ') or s:match('^Tema: (.*)$')
+        local t = s:match('^Tema: (.-) · Nivel') or s:match('^Tema: (.-) · Monográfico') or s:match('^Tema: (.*)$')
         if t then topic = t; i = i + 1 end
       end
       table.insert(out, pandoc.RawBlock('typst', string.format(

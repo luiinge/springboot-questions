@@ -10,9 +10,10 @@ FROM=markdown-citations-raw_html+ascii_identifiers
 pandoc es.md -o build/es.epub \
   --from "$FROM" \
   --css kindle.css \
+  --lua-filter epub.lua \
   --toc --toc-depth=2 \
   --split-level=1 \
-  --syntax-highlighting=pygments
+  --syntax-highlighting=none
 
 pandoc es.md -o build/es-print.typ \
   --from "$FROM" \
