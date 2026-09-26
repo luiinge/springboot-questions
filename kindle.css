@@ -75,7 +75,7 @@ blockquote p { margin: 0; }
 blockquote strong { color: #2f8f4e; }
 
 /* ---------- Código ---------- */
-code { font-family: monospace; font-size: 0.88em; color: #9b2c3a; }
+code { font-family: monospace; font-size: 0.88em; color: #9b2c3a; word-wrap: break-word; overflow-wrap: break-word; }
 pre { font-family: monospace; font-size: 0.75em; line-height: 1.3;
       white-space: pre-wrap; word-wrap: break-word;
       background-color: #f4f5f7; color: #2b2f36;

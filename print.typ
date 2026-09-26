@@ -244,7 +244,11 @@ $endif$
 // ---------- Código ----------
 
 #show raw: set text(font: mono)
-#show raw.where(block: false): set text(size: 8.3pt, fill: code-ink)
+// El código en línea puede partirse tras . _ / - (nombres largos de propiedades, paquetes...)
+#show raw.where(block: false): it => text(
+  font: mono, size: 8.3pt, fill: code-ink, hyphenate: false,
+  it.text.replace(regex("([._/-])"), m => m.text + "\u{200B}"),
+)
 #show raw.where(block: true): it => block(
   width: 100%, fill: code-bg, radius: 2pt, inset: (x: 9pt, y: 8pt),
   above: 12pt, below: 12pt, breakable: true,
