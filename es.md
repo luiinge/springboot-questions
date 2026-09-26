@@ -1,6 +1,7 @@
 ---
 title: "Entrevista Técnica Java: Spring Boot y Microservicios"
 subtitle: "158 preguntas con respuestas explicadas, de junior a senior"
+author: "Luis Iñesta Gelabert"
 lang: es-ES
 toc: true
 toc-depth: 2
