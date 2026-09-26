@@ -8,6 +8,38 @@ toc-depth: 2
 
 # Introducción
 
+Hay una escena que se repite en casi todas las entrevistas técnicas de backend. El candidato responde con seguridad a la primera pregunta: qué es la inyección de dependencias, para qué sirve `@Transactional`, qué es un microservicio. El entrevistador asiente y, sin cambiar el tono, pregunta: *¿y por qué?* O peor: *¿y qué pasa si ese método lo llamas desde otro método de la misma clase?* En ese momento se separa quien ha usado una herramienta de quien la entiende.
+
+Este libro nace para preparar ese segundo momento.
+
+## Por qué otro libro de preguntas
+
+Spring Boot es, desde hace años, la opción por defecto para construir servicios backend en Java. Su gran virtud es también su trampa: funciona tan bien sin tener que pensar que es posible trabajar con él durante mucho tiempo sin saber qué ocurre por debajo. La autoconfiguración, los proxies, las transacciones declarativas o la gestión de beans hacen su trabajo en silencio… hasta que dejan de hacerlo, en producción o en una entrevista.
+
+Encima de eso, un puesto de backend actual pide mucho más que Spring. Se espera saber diseñar una API REST, razonar sobre consistencia en sistemas distribuidos, elegir entre comunicación síncrona y asíncrona, desplegar en contenedores y explicar qué harías si un servicio empieza a responder lento a las tres de la mañana. Todo eso aparece en las entrevistas, a menudo mezclado en una misma conversación.
+
+Las listas de preguntas que circulan por internet suelen quedarse en la superficie: una definición de dos líneas que sirve para reconocer el concepto, pero no para defenderlo. Aquí he intentado lo contrario. Cada respuesta está escrita como la daría alguien que ha pasado por el problema: primero la idea central, después los matices, los errores habituales y los *trade-offs*, y código cuando el código explica mejor que las palabras.
+
+## A quién va dirigido
+
+A cualquier desarrollador que prepare una entrevista para un puesto de backend con Java, sea el primero o el quinto. Los primeros niveles sirven a quien empieza y necesita asentar los fundamentos; los últimos, a quien aspira a un puesto senior y tiene que hablar de rendimiento, arquitectura y diseño de sistemas con criterio propio.
+
+También a quien está al otro lado de la mesa. Si te toca entrevistar, encontrarás aquí preguntas con recorrido, pistas sobre qué distingue una respuesta buena de una excelente y repreguntas para ir más allá de lo memorizado.
+
+Y, por último, a quien simplemente quiere entender mejor la herramienta con la que trabaja cada día. Preparar una entrevista es una excusa excelente para rellenar huecos que llevan años ahí.
+
+## Qué no es este libro
+
+No es un manual de Spring Boot ni un curso paso a paso; da por hecho que has escrito algo de código con Java y que sabes lo que es una aplicación web. Tampoco es una colección de respuestas para recitar. Un buen entrevistador detecta enseguida una respuesta aprendida de memoria, y basta una repregunta para desmontarla. La idea es que entiendas cada tema lo suficiente como para explicarlo con tus propias palabras y relacionarlo con tu experiencia.
+
+## Una última recomendación
+
+Lee con un editor abierto. Muchas de las preguntas de este libro se entienden de verdad cuando reproduces el problema: provocas un N+1, ves cómo falla una auto-invocación con `@Transactional` o compruebas qué beans crea la autoconfiguración. Diez minutos de prueba valen más que cualquier explicación.
+
+Y recuerda que una entrevista técnica no es un examen, sino una conversación. Lo que se valora no es tener todas las respuestas, sino razonar en voz alta, reconocer lo que no sabes y saber llegar a una solución razonable. Ojalá este libro te ayude a llegar a esa conversación con tranquilidad.
+
+# Cómo usar este libro
+
 Este libro reúne **158 preguntas** habituales en entrevistas técnicas para puestos de desarrollo backend con Java, Spring Boot y microservicios, cada una con una respuesta explicada como la darías en una entrevista bien preparada: primero la idea central, después los matices y, cuando ayuda, código.
 
 ## Cómo está organizado
