@@ -5,6 +5,49 @@
 #let book-subtitle = [$subtitle$]
 #let book-author = [$author$]
 
+// ---------- Textos por idioma ----------
+#let lang-code = "$if(lang)$$lang$$else$es-ES$endif$"
+#let is-en = lang-code.starts-with("en")
+#let L = if is-en { (
+  lang: "en", region: "US",
+  guide: "TECHNICAL INTERVIEW PREPARATION GUIDE",
+  level: "Level", monograph: "Deep Dive", part: "Part", appendix: "Appendix",
+  questions: "questions", contents: "Contents",
+  levels: (
+    "Basic — Spring and Spring Boot fundamentals",
+    "Basic-Intermediate — Spring Boot in practice",
+    "Intermediate — Persistence, transactions and testing",
+    "Intermediate — Design patterns applied to Java and Spring",
+    "Intermediate-Advanced — Microservices: fundamentals, communication and infrastructure",
+    "Advanced — Resilience, distributed data and microservice patterns",
+    "Expert — Internals, performance and system design",
+  ),
+  monographs: (("A", "Apache Kafka in depth"), ("B", "Docker and Kubernetes"), ("C", "Observability and monitoring")),
+  rights: [All rights reserved. No part of this publication may be reproduced, stored or transmitted in any form or by any means without the prior written permission of the author.],
+  disclaimer: [Although every care has been taken in the preparation of this book, the author assumes no responsibility for errors or omissions, or for any damage resulting from the use of the information it contains.],
+  trademarks: [All trademarks mentioned belong to their respective owners.],
+  edition: "First edition",
+) } else { (
+  lang: "es", region: "ES",
+  guide: "GUÍA DE PREPARACIÓN DE ENTREVISTAS TÉCNICAS",
+  level: "Nivel", monograph: "Monográfico", part: "Parte", appendix: "Apéndice",
+  questions: "preguntas", contents: "Índice",
+  levels: (
+    "Básico — Fundamentos de Spring y Spring Boot",
+    "Básico-Intermedio — Spring Boot en la práctica",
+    "Intermedio — Persistencia, transacciones y testing",
+    "Intermedio — Patrones de diseño aplicados a Java y Spring",
+    "Intermedio-Avanzado — Microservicios: fundamentos, comunicación e infraestructura",
+    "Avanzado — Resiliencia, datos distribuidos y patrones de microservicios",
+    "Experto — Internals, rendimiento y diseño de sistemas",
+  ),
+  monographs: (("A", "Apache Kafka en profundidad"), ("B", "Docker y Kubernetes"), ("C", "Observabilidad y monitorización")),
+  rights: [Todos los derechos reservados. Ninguna parte de esta publicación puede ser reproducida, almacenada o transmitida por ningún medio sin el permiso previo y por escrito del autor.],
+  disclaimer: [Aunque se ha puesto el máximo cuidado en la preparación de este libro, el autor no asume responsabilidad alguna por errores u omisiones, ni por los daños que pudieran derivarse del uso de la información que contiene.],
+  trademarks: [Todas las marcas mencionadas pertenecen a sus respectivos propietarios.],
+  edition: "Primera edición",
+) }
+
 // ---------- Formato KDP ----------
 // A4 (8,27 x 11,69 in) + sangrado de 0,125 in en el borde exterior, superior e inferior
 #let bleed = 0.125in
@@ -48,11 +91,11 @@
 
 // Color de acento según el título del capítulo
 #let accent-for(title) = {
-  let m = title.match(regex("^Nivel (\d+)"))
+  let m = title.match(regex("^" + L.level + " (\d+)"))
   if m != none { return level-colors.at(int(m.captures.first()) - 1) }
-  let m = title.match(regex("^Monográfico ([A-Z])"))
+  let m = title.match(regex("^" + L.monograph + " ([A-Z])"))
   if m != none { return monograph-colors.at(m.captures.first(), default: default-accent) }
-  if title.starts-with("Apéndice") { return appendix-color }
+  if title.starts-with(L.appendix) { return appendix-color }
   default-accent
 }
 
@@ -63,7 +106,7 @@ $highlighting-definitions$
 $endif$
 
 #set document(title: book-title, author: "$author$")
-#set text(font: sans, size: 9.6pt, fill: ink, lang: "es", region: "ES", hyphenate: true)
+#set text(font: sans, size: 9.6pt, fill: ink, lang: L.lang, region: L.region, hyphenate: true)
 #set par(justify: false, leading: 0.72em, spacing: 1.05em)
 
 // ---------- Página ----------
@@ -134,7 +177,7 @@ $endif$
 
   context {
     let info = chapter-info()
-    if title.starts-with("Parte") {
+    if title.starts-with(L.part + " ") {
       // Separador de parte: página oscura completa
       dark-page[
         #v(2.2in)
@@ -153,7 +196,7 @@ $endif$
       // Nivel o monográfico: bloque de color
       pagebreak(weak: true)
       let kicker = parts.slice(0, -1).join(" · ")
-      if info.count != "" { kicker += " · " + info.count + " preguntas" }
+      if info.count != "" { kicker += " · " + info.count + " " + L.questions }
       block(width: 100%, fill: color, inset: (x: 20pt, top: 18pt, bottom: 20pt), below: 22pt, {
         set text(fill: white)
         text(size: 8.5pt, weight: "bold", tracking: 0.03em, upper(kicker))
@@ -198,8 +241,8 @@ $endif$
 
 #show heading.where(level: 2): it => {
   let title = to-string(it.body)
-  let q = title.match(regex("^(P\d+) · (.*)$$"))
-  let a = title.match(regex("^Apéndice ([A-Z]) · (.*)$$"))
+  let q = title.match(regex("^([PQ]\d+) · (.*)$$"))
+  let a = title.match(regex("^" + L.appendix + " ([A-Z]) · (.*)$$"))
   if q != none {
     context {
       let found = query(selector(<question-topic>).before(here()))
@@ -210,7 +253,7 @@ $endif$
     }
   } else if a != none {
     accent.update(appendix-color)
-    badged-heading(a.captures.at(0), "Apéndice", a.captures.at(1), appendix-color)
+    badged-heading(a.captures.at(0), L.appendix, a.captures.at(1), appendix-color)
   } else {
     block(sticky: true, above: 18pt, below: 9pt, text(size: 13pt, weight: "bold", it.body))
   }
@@ -277,7 +320,7 @@ $endif$
 #dark-page[
   #set par(justify: false)
   #v(2.1in)
-  #text(size: 8.5pt, weight: "bold", fill: spring, tracking: 0.06em)[GUÍA DE PREPARACIÓN DE ENTREVISTAS TÉCNICAS]
+  #text(size: 8.5pt, weight: "bold", fill: spring, tracking: 0.06em, L.guide)
   #v(0.9em)
   #text(size: 30pt, weight: "bold", fill: white, hyphenate: false, book-title)
   #v(0.8em)
@@ -287,21 +330,13 @@ $endif$
   #v(0.35in)
   #{
     set text(size: 8.5pt, fill: white.darken(12%))
-    let names = (
-      "Básico — Fundamentos de Spring y Spring Boot",
-      "Básico-Intermedio — Spring Boot en la práctica",
-      "Intermedio — Persistencia, transacciones y testing",
-      "Intermedio — Patrones de diseño aplicados a Java y Spring",
-      "Intermedio-Avanzado — Microservicios: fundamentos, comunicación e infraestructura",
-      "Avanzado — Resiliencia, datos distribuidos y patrones de microservicios",
-      "Experto — Internals, rendimiento y diseño de sistemas",
-    )
+    let names = L.levels
     for (i, n) in names.enumerate() {
-      block(above: 5pt, below: 5pt)[#text(fill: level-colors.at(i))[●] #h(5pt) Nivel #(i + 1) · #n]
+      block(above: 5pt, below: 5pt)[#text(fill: level-colors.at(i))[●] #h(5pt) #L.level #(i + 1) · #n]
     }
     v(4pt)
-    for (k, n) in (("A", "Apache Kafka en profundidad"), ("B", "Docker y Kubernetes"), ("C", "Observabilidad y monitorización")) {
-      block(above: 5pt, below: 5pt)[#text(fill: monograph-colors.at(k))[●] #h(5pt) Monográfico #k · #n]
+    for (k, n) in L.monographs {
+      block(above: 5pt, below: 5pt)[#text(fill: monograph-colors.at(k))[●] #h(5pt) #L.monograph #k · #n]
     }
   }
   #v(1fr)
@@ -319,17 +354,17 @@ $endif$
 
   © $if(copyright-year)$$copyright-year$$else$2026$endif$ #book-author
 
-  Todos los derechos reservados. Ninguna parte de esta publicación puede ser reproducida, almacenada o transmitida por ningún medio sin el permiso previo y por escrito del autor.
+  #L.rights
 
-  Aunque se ha puesto el máximo cuidado en la preparación de este libro, el autor no asume responsabilidad alguna por errores u omisiones, ni por los daños que pudieran derivarse del uso de la información que contiene.
+  #L.disclaimer
 
-  Todas las marcas mencionadas pertenecen a sus respectivos propietarios.
+  #L.trademarks
 
 $if(isbn)$
   ISBN: $isbn$
 
 $endif$
-  Primera edición: $if(copyright-year)$$copyright-year$$else$2026$endif$
+  #L.edition: $if(copyright-year)$$copyright-year$$else$2026$endif$
 ]
 
 // ---------- Índice ----------
@@ -347,7 +382,7 @@ $endif$
 #set outline.entry(fill: box(width: 1fr, repeat(gap: 2.5pt, text(fill: faint)[.])))
 
 #page(header: none, footer: none)[
-  #text(size: 20pt, weight: "bold", fill: navy)[Índice]
+  #text(size: 20pt, weight: "bold", fill: navy, L.contents)
   #v(18pt)
   #set par(justify: false)
   #outline(title: none, depth: $if(toc-depth)$$toc-depth$$else$2$endif$)
