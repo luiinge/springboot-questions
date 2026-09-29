@@ -19,7 +19,13 @@ Spring Boot es, desde hace años, la opción por defecto para construir servicio
 
 Encima de eso, un puesto de backend actual pide mucho más que Spring. Se espera saber diseñar una API REST, razonar sobre consistencia en sistemas distribuidos, elegir entre comunicación síncrona y asíncrona, desplegar en contenedores y explicar qué harías si un servicio empieza a responder lento a las tres de la mañana. Todo eso aparece en las entrevistas, a menudo mezclado en una misma conversación.
 
-Las listas de preguntas que circulan por internet suelen quedarse en la superficie: una definición de dos líneas que sirve para reconocer el concepto, pero no para defenderlo. Aquí he intentado lo contrario. Cada respuesta está escrita como la daría alguien que ha pasado por el problema: primero la idea central, después los matices, los errores habituales y los *trade-offs*, y código cuando el código explica mejor que las palabras.
+Las listas de preguntas que circulan por internet suelen quedarse en la superficie: una definición de dos líneas que sirve para reconocer el concepto, pero no para defenderlo. Aquí he intentado lo contrario. Cada respuesta está planteada como la daría alguien que ha pasado por el problema: primero la idea central, después los matices, los errores habituales y los *trade-offs*, y código cuando el código explica mejor que las palabras.
+
+## Cómo se ha elaborado
+
+Las preguntas de este libro y sus respuestas se recopilaron y redactaron con ayuda de herramientas de inteligencia artificial, a partir de los temas que aparecen con más frecuencia en entrevistas técnicas para puestos de backend con Java.
+
+Ese material fue solo el punto de partida. Después, cada pregunta y cada respuesta se ha repasado y validado para corregir imprecisiones y comprobar que las explicaciones son correctas. Aun así, ningún libro técnico está libre de errores; si encuentras alguno, contrástalo con la documentación de la versión que uses.
 
 ## A quién va dirigido
 
