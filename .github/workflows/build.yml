@@ -55,6 +55,7 @@ jobs:
           for lang in es en; do
             cp "build/$lang.pdf"  "dist/springboot-questions-$lang.pdf"
             cp "build/$lang.epub" "dist/springboot-questions-$lang.epub"
+            cp "build/$lang-cover.png" "dist/springboot-questions-$lang-cover.png"
           done
           ls -l dist
 

@@ -2,6 +2,7 @@
 # Genera el libro a partir de <idioma>.md:
 #   build/<idioma>.pdf         PDF para leer en pantalla (A4, color)
 #   build/<idioma>.epub        ebook
+#   build/<idioma>-cover.png   portada (primera página del PDF, 300 ppi)
 #   build/<idioma>-print.pdf   edición de imprenta con sangrado (solo con --print)
 # Requiere pandoc y typst en el PATH.
 # Uso: ./build.sh [--print] [es|en ...]   (sin idiomas, todos)
@@ -41,5 +42,6 @@ for lang in "${LANGS[@]}"; do
     --syntax-highlighting=none
 
   pdf "$lang" screen "$lang"
+  typst compile --format png --pages 1 --ppi 300 "build/$lang.typ" "build/$lang-cover.png"
   if $PRINT; then pdf "$lang" print "$lang-print"; fi
 done
