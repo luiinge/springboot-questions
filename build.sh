@@ -1,14 +1,35 @@
 #!/usr/bin/env bash
-# Genera las ediciones para Kindle Direct Publishing a partir de <idioma>.md:
-#   build/<idioma>.epub        ebook (requiere pandoc)
-#   build/<idioma>-print.pdf   tapa blanda A4 a color con sangrado (requiere pandoc y typst)
-# Uso: ./build.sh [es|en ...]   (sin argumentos, todos los idiomas)
+# Genera el libro a partir de <idioma>.md:
+#   build/<idioma>.pdf         PDF para leer en pantalla (A4, color)
+#   build/<idioma>.epub        ebook
+#   build/<idioma>-print.pdf   edición de imprenta con sangrado (solo con --print)
+# Requiere pandoc y typst en el PATH.
+# Uso: ./build.sh [--print] [es|en ...]   (sin idiomas, todos)
 set -euo pipefail
 cd "$(dirname "$0")"
 mkdir -p build
 FROM=markdown-citations-raw_html+ascii_identifiers
-LANGS=("$@")
+
+PRINT=false
+LANGS=()
+for arg in "$@"; do
+  case "$arg" in
+    --print) PRINT=true ;;
+    *) LANGS+=("$arg") ;;
+  esac
+done
 [ ${#LANGS[@]} -eq 0 ] && LANGS=(es en)
+
+pdf() {  # pdf <idioma> <edición> <salida>
+  pandoc "$1.md" -o "build/$3.typ" \
+    --from "$FROM" \
+    --template print.typ \
+    --lua-filter print.lua \
+    --syntax-highlighting=none \
+    --columns=1000 \
+    -V edition="$2"
+  typst compile "build/$3.typ" "build/$3.pdf"
+}
 
 for lang in "${LANGS[@]}"; do
   pandoc "$lang.md" -o "build/$lang.epub" \
@@ -19,11 +40,6 @@ for lang in "${LANGS[@]}"; do
     --split-level=1 \
     --syntax-highlighting=none
 
-  pandoc "$lang.md" -o "build/$lang-print.typ" \
-    --from "$FROM" \
-    --template print.typ \
-    --lua-filter print.lua \
-    --syntax-highlighting=none \
-    --columns=1000
-  typst compile "build/$lang-print.typ" "build/$lang-print.pdf"
+  pdf "$lang" screen "$lang"
+  if $PRINT; then pdf "$lang" print "$lang-print"; fi
 done

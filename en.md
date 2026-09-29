@@ -2,6 +2,7 @@
 title: "Java Technical Interview: Spring Boot and Microservices"
 subtitle: "158 questions with explained answers, from junior to senior"
 author: "Luis Iñesta Gelabert"
+rights: "© 2026 Luis Iñesta Gelabert. Licensed under CC BY-SA 4.0 (text) and MIT (code examples)."
 lang: en-US
 toc: true
 toc-depth: 2

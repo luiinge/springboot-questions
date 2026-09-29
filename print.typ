@@ -1,4 +1,6 @@
-// Plantilla pandoc -> Typst para la edición impresa (KDP, A4 con sangrado, color).
+// Plantilla pandoc -> Typst del libro en PDF (A4, color).
+// Dos ediciones: "screen" (por defecto, para leer en pantalla) y "print"
+// (imprenta: sangrado y márgenes de encuadernación). Se elige con -V edition=print.
 // Se usa junto con print.lua, que aporta <chapter-info> y <question-topic>.
 
 #let book-title = [$title$]
@@ -23,7 +25,8 @@
     "Expert — Internals, performance and system design",
   ),
   monographs: (("A", "Apache Kafka in depth"), ("B", "Docker and Kubernetes"), ("C", "Observability and monitoring")),
-  rights: [All rights reserved. No part of this publication may be reproduced, stored or transmitted in any form or by any means without the prior written permission of the author.],
+  rights: [This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International licence (CC BY-SA 4.0). You may copy, redistribute and adapt it, including for commercial purposes, provided that you credit the author and share any derivative works under the same licence. Licence text: #link("https://creativecommons.org/licenses/by-sa/4.0/")[creativecommons.org/licenses/by-sa/4.0]. The code examples are licensed under the MIT licence.],
+  source: [Latest version and source files: #link("https://github.com/luiinge/springboot-questions")[github.com/luiinge/springboot-questions]],
   disclaimer: [Although every care has been taken in the preparation of this book, the author assumes no responsibility for errors or omissions, or for any damage resulting from the use of the information it contains.],
   trademarks: [All trademarks mentioned belong to their respective owners.],
   edition: "First edition",
@@ -42,18 +45,22 @@
     "Experto — Internals, rendimiento y diseño de sistemas",
   ),
   monographs: (("A", "Apache Kafka en profundidad"), ("B", "Docker y Kubernetes"), ("C", "Observabilidad y monitorización")),
-  rights: [Todos los derechos reservados. Ninguna parte de esta publicación puede ser reproducida, almacenada o transmitida por ningún medio sin el permiso previo y por escrito del autor.],
+  rights: [Esta obra se publica bajo la licencia Creative Commons Reconocimiento-CompartirIgual 4.0 Internacional (CC BY-SA 4.0). Se permite copiarla, redistribuirla y adaptarla, incluso con fines comerciales, siempre que se cite al autor y las obras derivadas se compartan con la misma licencia. Texto de la licencia: #link("https://creativecommons.org/licenses/by-sa/4.0/deed.es")[creativecommons.org/licenses/by-sa/4.0]. Los ejemplos de código se publican bajo la licencia MIT.],
+  source: [Versión más reciente y ficheros fuente: #link("https://github.com/luiinge/springboot-questions")[github.com/luiinge/springboot-questions]],
   disclaimer: [Aunque se ha puesto el máximo cuidado en la preparación de este libro, el autor no asume responsabilidad alguna por errores u omisiones, ni por los daños que pudieran derivarse del uso de la información que contiene.],
   trademarks: [Todas las marcas mencionadas pertenecen a sus respectivos propietarios.],
   edition: "Primera edición",
 ) }
 
-// ---------- Formato KDP ----------
-// A4 (8,27 x 11,69 in) + sangrado de 0,125 in en el borde exterior, superior e inferior
-#let bleed = 0.125in
+// ---------- Formato ----------
+// A4 (8,27 x 11,69 in). En la edición impresa se añade un sangrado de 0,125 in en el
+// borde exterior, superior e inferior, y un margen interior mayor para la encuadernación.
+#let is-print = "$edition$" == "print"
+#let bleed = if is-print { 0.125in } else { 0in }
 #let trim-width = 8.27in
 #let trim-height = 11.69in
-#let gutter = $if(gutter)$$gutter$$else$0.8in$endif$
+#let gutter = if is-print { 0.8in } else { 0.75in }
+#let dark-inner = if is-print { gutter } else { 0.9in }
 
 // ---------- Paleta ----------
 #let navy = rgb("#1c2733")
@@ -116,8 +123,9 @@ $endif$
   start.len() == 0 or here().page() < start.first().location().page()
 }
 
+// Cabecera y número de página: en el borde exterior (impresa) o siempre a la derecha (pantalla)
 #let outside(body) = context {
-  if calc.even(here().page()) { align(left, body) } else { align(right, body) }
+  if is-print and calc.even(here().page()) { align(left, body) } else { align(right, body) }
 }
 
 #set page(
@@ -143,15 +151,15 @@ $endif$
 // Página de fondo oscuro a sangre (portada interior y separadores de parte)
 #let dark-page(body) = page(
   fill: navy, header: none, footer: none,
-  margin: (inside: gutter, outside: 0.9in + bleed, top: 1in + bleed, bottom: 1in + bleed),
+  margin: (inside: dark-inner, outside: 0.9in + bleed, top: 1in + bleed, bottom: 1in + bleed),
   body,
 )
 
 // Franja con los colores de los niveles, de sangre a sangre
 #let level-bar(height: 5pt) = context {
   let even = calc.even(here().page())
-  let left-margin = if even { 0.9in + bleed } else { gutter }
-  let right-margin = if even { gutter } else { 0.9in + bleed }
+  let left-margin = if even { 0.9in + bleed } else { dark-inner }
+  let right-margin = if even { dark-inner } else { 0.9in + bleed }
   move(dx: -left-margin, block(
     width: 100% + left-margin + right-margin,
     grid(columns: (1fr,) * level-colors.len(), ..level-colors.map(c => rect(width: 100%, height: height, fill: c, stroke: none))),
@@ -360,6 +368,8 @@ $endif$
 
   #L.trademarks
 
+  #L.source
+
 $if(isbn)$
   ISBN: $isbn$
 
@@ -390,7 +400,7 @@ $endif$
 
 // ---------- Cuerpo ----------
 
-#pagebreak(to: "odd", weak: true)
+#if is-print { pagebreak(to: "odd", weak: true) } else { pagebreak(weak: true) }
 #counter(page).update(1)
 #metadata(none)<body-start>
 
