@@ -63,6 +63,9 @@ h2.question .badge {
   font-size: 0.8em; padding: 0.15em 0.4em; margin-right: 0.3em;
 }
 h2.question .htitle { display: block; margin-top: 0.4em; }
+/* Subsecciones de la introducción (bajadas a h3 por epub.lua): aspecto de h2 */
+h3.subsection { font-size: 1.15em; text-transform: none; letter-spacing: 0;
+                color: #1c2733; margin: 1.4em 0 0.6em 0; }
 div.topic p { font-size: 0.7em; font-weight: bold; text-transform: uppercase;
               letter-spacing: 0.04em; color: #6b7280; margin: -0.3em 0 1em 0; }
 

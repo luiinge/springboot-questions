@@ -38,7 +38,7 @@ for lang in "${LANGS[@]}"; do
     --css kindle.css \
     --lua-filter epub.lua \
     --toc --toc-depth=2 \
-    --split-level=1 \
+    --split-level=2 \
     --syntax-highlighting=none
 
   pdf "$lang" screen "$lang"

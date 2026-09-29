@@ -1,5 +1,6 @@
 -- Filtro pandoc para el EPUB: reproduce la estructura visual de la edición impresa
--- (bloques de color por capítulo, distintivos de pregunta, una pregunta por página)
+-- (bloques de color por capítulo, distintivos de pregunta, una pregunta por página:
+-- cada pregunta va en su propio fichero, porque muchos lectores ignoran page-break-before)
 -- mediante clases que estiliza kindle.css. El texto de los títulos no cambia, así
 -- que el índice del Kindle sigue mostrando "Nivel 1 · Básico · ..." y "P001 · ...".
 --
@@ -102,6 +103,14 @@ function Pandoc(doc)
         pandoc.Span(pandoc.Str(' · '), {class = 'sep'}),
         pandoc.Span(pandoc.Str(title), {class = 'htitle'}),
       }
+      table.insert(out, b)
+      i = i + 1
+
+    elseif b.t == 'Header' and b.level == 2 then
+      -- Subsecciones de la introducción: se bajan a nivel 3 para que el EPUB, que se
+      -- divide en un fichero por pregunta (--split-level=2), no las separe en páginas
+      b.level = 3
+      b.classes:insert('subsection')
       table.insert(out, b)
       i = i + 1
 
